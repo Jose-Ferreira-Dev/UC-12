@@ -4,6 +4,7 @@
  */
 package modelo;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -43,14 +44,28 @@ public class Paciente {
     }
 
     public void setEmail(String email) {
+    if (email == null || email.isEmpty()) {
+        this.email = null; // Permite email nulo ou vazio
+    } else if (!email.matches("^[\\w-\\.]+@[\\w-]+\\.[a-z]{2,}$")) {
+        throw new IllegalArgumentException("E-mail inválido. O e-mail deve conter '@' e um domínio válido.");
+    } else {
         this.email = email;
     }
+}
+
+
+
+
+
 
     public int getConvenio() {
         return convenio;
     }
 
     public void setConvenio(int convenio) {
+        if (convenio <= 0) {
+            throw new IllegalArgumentException("Convênio inválido. Selecione um convênio válido.");
+        }
         this.convenio = convenio;
     }
 
@@ -67,7 +82,10 @@ public class Paciente {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        if (nome == null || nome.trim().isEmpty() || nome.length() > 55) {
+            throw new IllegalArgumentException("Nome inválido. O nome deve ter no máximo 55 caracteres.");
+        }
+        this.nome = nome.trim();
     }
 
     public String getEndereco() {
@@ -75,7 +93,10 @@ public class Paciente {
     }
 
     public void setEndereco(String endereco) {
-        this.endereco = endereco;
+        if (endereco == null || endereco.trim().isEmpty() || endereco.length() > 200) {
+            throw new IllegalArgumentException("Endereço inválido. O endereço deve ter no máximo 200 caracteres.");
+        }
+        this.endereco = endereco.trim();
     }
 
     public Date getDataNascimento() {
@@ -83,15 +104,44 @@ public class Paciente {
     }
 
     public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    if (dataNascimento == null) {
+        throw new IllegalArgumentException("Data de nascimento inválida. A data de nascimento é obrigatória.");
     }
+
+    // Cria um Calendar para a data de nascimento
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(dataNascimento);
+
+    // Cria um Calendar para a data limite (1920)
+    Calendar dataLimite = Calendar.getInstance();
+    dataLimite.set(Calendar.YEAR, 1920);
+    dataLimite.set(Calendar.MONTH, Calendar.JANUARY);
+    dataLimite.set(Calendar.DAY_OF_MONTH, 1);
+
+    // Verifica se a data de nascimento é inferior à data limite
+    if (calendar.before(dataLimite)) {
+        throw new IllegalArgumentException("Data de nascimento inválida. A data de nascimento deve ser igual ou posterior a 01/01/1920.");
+    }
+
+    this.dataNascimento = dataNascimento;
+}
+
 
     public String getTelefone() {
         return telefone;
     }
 
     public void setTelefone(String telefone) {
-        this.telefone = telefone;
+        if (telefone == null || telefone.trim().isEmpty()) {
+            throw new IllegalArgumentException("Telefone inválido. O telefone é obrigatório.");
+        }
+        // Remove todos os caracteres não numéricos do telefone
+        telefone = telefone.replaceAll("[^0-9]", "");
+        if (telefone.length() != 10 && telefone.length() != 11) {
+            throw new IllegalArgumentException("Telefone inválido. O telefone deve ter 10 ou 11 dígitos.");
+        }
+        // Formata o telefone para (xx) xxxx-xxxx
+        this.telefone = "(" + telefone.substring(0, 2) + ") " + telefone.substring(2, 6) + "-" + telefone.substring(6);
     }
 
     public String getCpf() {
@@ -99,7 +149,16 @@ public class Paciente {
     }
 
     public void setCpf(String cpf) {
-        this.cpf = cpf;
+        if (cpf == null || cpf.trim().isEmpty()) {
+            throw new IllegalArgumentException("CPF inválido. O CPF é obrigatório.");
+        }
+        // Remove todos os caracteres não numéricos do CPF
+        cpf = cpf.replaceAll("[^0-9]", "");
+        if (cpf.length() != 11) {
+            throw new IllegalArgumentException("CPF inválido. O CPF deve ter 11 dígitos.");
+        }
+        // Formata o CPF para xxx.xxx.xxx-xx
+        this.cpf = cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9) + "-" + cpf.substring(9);
     }
 
     public String getRg() {
@@ -107,8 +166,19 @@ public class Paciente {
     }
 
     public void setRg(String rg) {
-        this.rg = rg;
+    if (rg == null || rg.trim().isEmpty()) {
+        throw new IllegalArgumentException("RG inválido. O RG é obrigatório.");
     }
+    // Remove todos os caracteres não numéricos do RG
+    rg = rg.replaceAll("[^0-9]", ""); 
+    // Valida se o RG tem 9 dígitos (após remover caracteres não numéricos)
+    if (rg.length() != 9) {
+        throw new IllegalArgumentException("RG inválido. O RG deve ter 9 dígitos.");
+    }
+    // Formata o RG para xx.xxx.xxx-x
+    this.rg = rg.substring(0, 2) + "." + rg.substring(2, 5) + "." + rg.substring(5, 8) + "-" + rg.substring(8);
+}
+
 
     public int getIdConvenio() {
         return convenio;

@@ -39,7 +39,7 @@ public class PacienteDAO {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
             // String que receberá instrução SQL
-            String sql = "insert into PACIENTE(NOME, ENDERECO, DATA_NASC, TELEFONE, CPF, RG, ID_CONVENIO_FK) values(?,?,?,?,?,?,?)";
+            String sql = "insert into PACIENTE(NOME, ENDERECO, DATA_NASC, TELEFONE, CPF, RG, EMAIL, ID_CONVENIO_FK) values(?,?,?,?,?,?,?,?)";
 
             PreparedStatement pst = this.con.prepareStatement(sql);
 
@@ -50,7 +50,8 @@ public class PacienteDAO {
             pst.setString(4, pac.getTelefone());
             pst.setString(5, pac.getCpf());
             pst.setString(6, pac.getRg());
-            pst.setInt(7, pac.getIdConvenio());
+            pst.setString(7, pac.getEmail());
+            pst.setInt(8, pac.getIdConvenio());
 
             // Executando o PreparedStatement
             pst.execute();
@@ -106,6 +107,7 @@ public class PacienteDAO {
                 pac.setTelefone(rs.getString("TELEFONE"));
                 pac.setCpf(rs.getString("CPF"));
                 pac.setRg(rs.getString("RG"));
+                pac.setEmail(rs.getString("EMAIL"));
                 pac.setIdConvenio(rs.getInt("ID_CONVENIO_FK"));
 
 
@@ -160,6 +162,7 @@ public class PacienteDAO {
                 pac.setTelefone(rs.getString("TELEFONE"));
                 pac.setCpf(rs.getString("CPF"));
                 pac.setRg(rs.getString("RG"));
+                pac.setEmail(rs.getString("EMAIL"));
                 pac.setIdConvenio(rs.getInt("ID_CONVENIO_FK"));
 
                 /* Inserindo o objeto pac no ArrayList */

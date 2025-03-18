@@ -11,9 +11,9 @@ import java.sql.SQLException;
 public class ConexaoBanco {
 
     //Atributos estáticos com os dados do Banco de Dados
-    private static String URL = "jdbc:mysql://localhost:3306/hospital_uc12";
-    private static String USUARIO = "root";
-    private static String SENHA = "root";
+    private static String URL = "jdbc:mysql://localhost:1001/hospital_uc12";
+    private static String USUARIO = "Jose";
+    private static String SENHA = "Jm_08/10";
 
     /*
     Ao chamar este método  getConexao()  em outra classe, como por exemplo em um DAO, é 

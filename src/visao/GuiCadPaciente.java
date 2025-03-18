@@ -45,7 +45,7 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
         jtTelefone = new javax.swing.JTextField();
         jlTelefone = new javax.swing.JLabel();
         jlEmail1 = new javax.swing.JLabel();
-        jtEmail1 = new javax.swing.JTextField();
+        jtEmail = new javax.swing.JTextField();
         jlRG = new javax.swing.JLabel();
         jtRG = new javax.swing.JTextField();
         jcConvenio = new javax.swing.JComboBox<>();
@@ -102,8 +102,8 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
         jlEmail1.setText("E-mal");
         jLayeredPane1.add(jlEmail1);
         jlEmail1.setBounds(40, 220, 90, 30);
-        jLayeredPane1.add(jtEmail1);
-        jtEmail1.setBounds(140, 220, 210, 30);
+        jLayeredPane1.add(jtEmail);
+        jtEmail.setBounds(140, 220, 210, 30);
 
         jlRG.setText("RG");
         jLayeredPane1.add(jlRG);
@@ -175,6 +175,7 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
             pac.setTelefone(jtTelefone.getText());
             pac.setCpf(jtCpf.getText());
             pac.setRg(jtRG.getText());
+            pac.setEmail(jtEmail.getText());
 
             // Verificando se um convênio foi selecionado no JComboBox
             if (!(jcConvenio.getSelectedIndex() == 0)) {
@@ -214,7 +215,11 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
     private void limpar() {
         jtNome.setText("");
         jtEndereco.setText("");
+        jtDataNasc.setText("");
+        jtTelefone.setText("");
         jtCpf.setText("");
+        jtRG.setText("");
+        jtEmail.setText("");
     }// fecha método
 
     
@@ -274,7 +279,7 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jlTelefone;
     private javax.swing.JTextField jtCpf;
     private javax.swing.JTextField jtDataNasc;
-    private javax.swing.JTextField jtEmail1;
+    private javax.swing.JTextField jtEmail;
     private javax.swing.JTextField jtEndereco;
     private javax.swing.JTextField jtNome;
     private javax.swing.JTextField jtRG;
