@@ -37,6 +37,11 @@ public class PacienteDAO {
 
             con = conexao.getConexao();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            
+            // Verificação de unicidade de CPF e RG
+            if (cpfJaCadastrado(pac.getCpf()) || rgJaCadastrado(pac.getRg())) {
+                throw new SQLException("CPF ou RG já cadastrado no sistema!");
+            }
 
             // String que receberá instrução SQL
             String sql = "insert into PACIENTE(NOME, ENDERECO, DATA_NASC, TELEFONE, CPF, RG, EMAIL, ID_CONVENIO_FK) values(?,?,?,?,?,?,?,?)";
@@ -59,12 +64,41 @@ public class PacienteDAO {
         } catch (SQLException se) {
             throw new SQLException("Erro ao inserir dados no Banco de Dados! " + se.getMessage());
         } finally {
-
-            // Encerrando as conexões
-            con.close();
-
-        } // fecha finally
+            try {
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                // Lidar com a exceção de fechamento da conexão, se necessário.  Logar, por exemplo.
+            }
+        }// fecha finally
     }// fecha método cadastrarPaciente
+  
+    private boolean cpfJaCadastrado(String cpf) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM PACIENTE WHERE CPF = ?";
+        try (Connection con =conexao.getConexao();
+        PreparedStatement pst = con.prepareStatement(sql)) {
+        pst.setString(1, cpf);
+        try (ResultSet rs = pst.executeQuery()) {
+            rs.next();
+            return rs.getInt(1) > 0;
+            }
+        }
+    }
+    
+    private boolean rgJaCadastrado(String rg) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM PACIENTE WHERE RG = ?";
+        try (Connection con =conexao.getConexao();
+        PreparedStatement pst = con.prepareStatement(sql)) {
+        pst.setString(1, rg);
+        try (ResultSet rs = pst.executeQuery()) {
+            rs.next();
+            return rs.getInt(1) > 0;
+            }
+        }
+    }
+    
+    
+    
+    
 
     // método buscarPaciente com condição
     public ArrayList<Paciente> buscarPacienteFiltro(String query) throws SQLException {
